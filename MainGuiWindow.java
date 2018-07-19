@@ -1,4 +1,7 @@
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class MainGuiWindow extends JFrame {
 
@@ -20,6 +23,13 @@ public class MainGuiWindow extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 				
+	}
+	
+	public void leftPanel(){
+		JPanel leftPanel = new JPanel();
+//		leftPanel.setLayout(BorderLayout.WEST);
+		
+		
 	}
 
 }
