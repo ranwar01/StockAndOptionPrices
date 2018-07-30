@@ -108,7 +108,7 @@ public class MainClass {
 //		}
 //        System.out.println(inputLine.toString());
 		 final MainClass sampleSuite = new MainClass();
-//		 MainGuiWindow gui = new MainGuiWindow();
+		 MainGuiWindow gui = new MainGuiWindow();
 		 
 
 	 
