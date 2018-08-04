@@ -9,6 +9,7 @@ import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.ietf.jgss.GSSContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,50 +27,50 @@ public class MainClass {
 	static String [] symbols = {"amd","snap","fcx", "aapl"};
 
 	
-	public static void main (String [] args) throws JSONException{
-		
-//		MainGuiWindow mgw = new MainGuiWindow();
-		for (int i = 0; i< symbols.length; i++){
-		
-		try {
-			
-		    URL myURL = new URL("https://api.iextrading.com/1.0/stock/" + symbols[i] + "/quote");
-		    System.out.println(symbols[i]);
-		    conn = (HttpsURLConnection) myURL.openConnection();
-//		    myURLConnection = myURL.openConnection();
-		    conn.setRequestMethod("GET");
-		} 
-		catch (MalformedURLException e) { 
-		    // new URL() failed
-		    // ...
-		} 
-		catch (IOException e) {   
-		    // openConnection() failed
-		    // ...
-		}
-		try {
-		in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-        try {
-			while ((inputLine = in.readLine()) != null) {
-				response = new StringBuffer();
-				response.append(inputLine);
-			    System.out.println(inputLine);
-			    
-			    JSONObject myResponse = new JSONObject(response.toString());
-			 	System.out.println("My Response: " + myResponse);
-		    	System.out.println(myResponse.get("symbol"));
-		    	System.out.println(myResponse.get("iexRealtimePrice"));
-			}
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main (String [] args) throws JSONException, IOException{
+//		
+////		MainGuiWindow mgw = new MainGuiWindow();
+//		for (int i = 0; i< symbols.length; i++){
+//		
+//		try {
+//			
+//		    URL myURL = new URL("https://api.iextrading.com/1.0/stock/" + symbols[i] + "/quote");
+//		    System.out.println(symbols[i]);
+//		    conn = (HttpsURLConnection) myURL.openConnection();
+////		    myURLConnection = myURL.openConnection();
+//		    conn.setRequestMethod("GET");
+//		} 
+//		catch (MalformedURLException e) { 
+//		    // new URL() failed
+//		    // ...
+//		} 
+//		catch (IOException e) {   
+//		    // openConnection() failed
+//		    // ...
+//		}
+//		try {
+//		in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//        try {
+//			while ((inputLine = in.readLine()) != null) {
+//				response = new StringBuffer();
+//				response.append(inputLine);
+//			    System.out.println(inputLine);
+//			    
+//			    JSONObject myResponse = new JSONObject(response.toString());
+//			 	System.out.println("My Response: " + myResponse);
+//		    	System.out.println(myResponse.get("symbol"));
+//		    	System.out.println(myResponse.get("iexRealtimePrice"));
+//			}
+//		
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 //    	JSONObject myResponse = new JSONObject(response.toString());
 //      	JSONObject myResponse2 = new JSONObject(inputLine.toString());
 //    	System.out.println("My Response: " + myResponse);
@@ -92,13 +93,13 @@ public class MainClass {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();
 //		}
-        try {
-			in.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}
+//        try {
+//			in.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		}
         
 //		try {
 //			myResponse = new JSONObject(inputLine.toString());
@@ -107,8 +108,10 @@ public class MainClass {
 //			e.printStackTrace();
 //		}
 //        System.out.println(inputLine.toString());
-		 final MainClass sampleSuite = new MainClass();
-		 MainGuiWindow gui = new MainGuiWindow();
+		 GetStockPrice gsp = new GetStockPrice();
+		 gsp.returnStockPrice("amd");
+		 gsp.printValues("open");
+		 MainGuiWindow gui = new MainGuiWindow(gsp);
 		 
 
 	 

@@ -3,7 +3,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -14,84 +16,61 @@ import org.json.JSONObject;
 
 public class GetStockPrice {
 	
+	
+	
 	public static final String APIADDRESS = "https://api.iextrading.com/1.0";
-	String s = "/stock/";
-//	String nameOfStockToSearch = "a";
+	private String stock = "/stock/";
+
 	URL url;
 	HttpsURLConnection conn;
 	BufferedReader in;
 	String inputLine;
 	StringBuffer response;
 	JSONObject myResponse;
-	JSONObject newj;
-	JSONArray ar;
+
+	public HashMap <String, String> hm;
+	public LinkedList<String> ll;
+
 
 	
-	
+	// takes in a string value
 	public void returnStockPrice(String stockName) throws IOException, JSONException{
-		url = new URL(GetStockPrice.APIADDRESS + s  + stockName + "/quote");
-		System.out.println(url);
+		
+		url = new URL(GetStockPrice.APIADDRESS + stock  + stockName + "/quote");
+		System.out.println("Url is: - " + url);
+		
 		conn = (HttpsURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		response = new StringBuffer();
+		
         try {
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
-			    System.out.println(inputLine);
-//			    newj = new JSONObject(response);
-//			 	System.out.println("My Response: " + myResponse);
-//		    	System.out.println(myResponse.get("symbol"));
-//		    	System.out.println(myResponse.get("iexRealtimePrice"));
-			}
-		
+			}	
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
+        
         myResponse = new JSONObject(response.toString());
-        newj = new JSONObject(response.toString());
-//        ar = new JSONArray(response.toString());
-//        ar = new JSONArray(response.toString());
-//        System.out.println(ar.toString() + "array");
-//		System.out.println( myResponse.get("companyName"));
-	
-		
-		
-	}
-	public static void main (String [] args) throws IOException, JSONException{
-		GetStockPrice gsp = new GetStockPrice();
-		gsp.returnStockPrice("amd");
-		gsp.getCompanyName();
-		gsp.getFiftyTwoWeekLow();
-		gsp.getFiftyTwoWeekHigh();
-		gsp.getPriceEarningsRatio();
-		gsp.getAverageTotalVolume();
-		gsp.loopingThrough();
 
-		
-		
-		
+	
+		loopingThrough();
+//		printValues();
 		
 	}
+
 	public void loopingThrough() throws JSONException{
-//		newj = new JSONObject(response);
-//		JSONObject posts = mainObject.getJSONObject(newj);
-//		Map<String, JSONObject> map = (Map<String,JSONObject>)newj.getMap();
-//
-//		ArrayList<String> list = new ArrayList<String>(map.keySet());
-//
-		if (newj instanceof JSONObject){
-			System.out.println("hello11");
-			System.out.println(newj);
-			System.out.println(newj.get("symbol"));}
-		
-//			for (int i = 0; i < newj.length(); i++){
-////				System.out.println(newj.get
-//			}
-		for(Iterator iterator = newj.keys(); iterator.hasNext();) {
+
+		hm = new HashMap<String,String>();
+		ll = new LinkedList<String>();
+
+		for(Iterator iterator = myResponse.keys(); iterator.hasNext();) {
 		    String key = (String) iterator.next();
-		    System.out.println(key + "    value is:  " + newj.get(key));
+		    ll.add(key);
+		    hm.put(key, myResponse.get(key).toString());
+		    System.out.println(key + "    value is:  " + myResponse.get(key));
 		}
 //		String jsonstring = { "child": { "something": "value", "something2": "value" } };
 //			newj = new JSONObject(response);
@@ -106,6 +85,39 @@ public class GetStockPrice {
 //			}
 		
 		
+	}
+	public void callMyMethod(String stockName){
+		try {
+			this.returnStockPrice(stockName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public LinkedList<String> getFields(){
+		
+		return ll;
+		
+	}
+	public String printValues(String key){
+		
+		System.out.println("Key is: " + key);
+		if (hm.containsKey(key)) {
+			System.out.println("Key is: " + key + " value is: " + hm.get(key));
+			return hm.get(key);	
+		}
+		System.out.println("returning null");
+		return null;
+		
+		
+		
+	}
+	public String getValue(String key) throws JSONException{
+		return myResponse.get(key).toString();
 	}
 	
 	public String getCompanyName() throws JSONException{

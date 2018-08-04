@@ -1,12 +1,15 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 public class MainGuiWindow extends JFrame {
 
@@ -23,20 +26,23 @@ public class MainGuiWindow extends JFrame {
 	JPanel menuBarPanel;
 	JPanel centerBarPanel;
 	JLabel [] displayLabel;
+	JLabel [] textFields;
+	private GetStockPrice gsp;
 	
 	
-	public MainGuiWindow(){
+	public MainGuiWindow(GetStockPrice gsp){
 		
-//		this.requestFocus();
+
 		this.setSize(width, height);
 		this.setTitle("Stock And Options Visualization");
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.gsp = gsp;
 	
 		menuBarPanel();
 		centerBarPanel();
-		leftPanel = new leftButtonPanel();
+		leftPanel = new leftButtonPanel(gsp, this);
 		this.add(leftPanel, BorderLayout.LINE_START);
 		this.add(menuBarPanel, BorderLayout.PAGE_START);
 		this.add(centerBarPanel, BorderLayout.CENTER);
@@ -59,22 +65,44 @@ public void centerBarPanel(){
 		
 		centerBarPanel = new JPanel();
 		centerBarPanel.setSize(550, 900);
-		centerBarPanel.setBackground(Color.LIGHT_GRAY);
-		centerBarPanel.setLayout(new GridLayout(3, 3));
+		centerBarPanel.setBackground(Color.WHITE);
+		centerBarPanel.setLayout(new GridLayout(20, 4));
 		createLabels();
 		
 		
 	}
 
-public void createLabels(){
-	displayLabel = new JLabel[10];
-	for (int i = 0; i < 10; i++){
-		displayLabel[i] = new JLabel(displayFields[i]);
+public void createLabels() {
+	displayLabel = new JLabel[gsp.getFields().size()];
+	textFields = new JLabel[gsp.getFields().size()];
+	for (int i = 0; i < gsp.getFields().size(); i++){
+		displayLabel[i] = new JLabel(gsp.getFields().get(i));
+		displayLabel[i].setBackground(Color.LIGHT_GRAY);
+		displayLabel[i].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)); 
+		displayLabel[i].setOpaque(true);
+		textFields[i] = new JLabel(gsp.printValues(gsp.getFields().get(i)));
+		textFields[i].setBackground(Color.CYAN);
+		textFields[i].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED)); 
+			
+
+		textFields[i].setOpaque(true);
 		centerBarPanel.add(displayLabel[i]);
+		centerBarPanel.add(textFields[i]);
 	}
 	
 }
+
+public void updateLabels(){
+	for (int i = 0; i < gsp.getFields().size(); i++){
+		textFields[i].setText(gsp.printValues(gsp.getFields().get(i)));
+//		displayLabel[i] = new JLabel(gsp.getFields().get(i));
+//		textFields[i] = new JLabel(gsp.printValues(gsp.getFields().get(i)));
+//		centerBarPanel.add(displayLabel[i]);
+//		centerBarPanel.add(textFields[i]);
+	}
 	
+}
+
 
 		
 //		JPanel rightPanel = new JPanel();
