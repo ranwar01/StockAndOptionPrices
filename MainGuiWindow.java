@@ -28,6 +28,8 @@ public class MainGuiWindow extends JFrame {
 	JLabel [] displayLabel;
 	JLabel [] textFields;
 	private GetStockPrice gsp;
+	TabPanes tp;
+	FileMenuBar fileMenuBar;
 	
 	
 	public MainGuiWindow(GetStockPrice gsp){
@@ -39,10 +41,12 @@ public class MainGuiWindow extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.gsp = gsp;
-	
+		fileMenuBar = new FileMenuBar();
 		menuBarPanel();
 		centerBarPanel();
 		leftPanel = new leftButtonPanel(gsp, this);
+		tp = new TabPanes();
+//		this.add(tp.returnsTabbedPane(), BorderLayout.PAGE_START);
 		this.add(leftPanel, BorderLayout.LINE_START);
 		this.add(menuBarPanel, BorderLayout.PAGE_START);
 		this.add(centerBarPanel, BorderLayout.CENTER);
@@ -53,18 +57,15 @@ public class MainGuiWindow extends JFrame {
 	public void menuBarPanel(){
 		
 		menuBarPanel = new JPanel();
-		menuBarPanel.setSize(750, 100);
-		menuBarPanel.setBackground(Color.BLUE);
-		JLabel label = new JLabel("File");
-		menuBarPanel.add(label);
-		
-		
-		
+		menuBarPanel.setSize(1000, 25);
+		menuBarPanel.add(fileMenuBar.returnMenuBarPanel());
+	
 	}
+	
 public void centerBarPanel(){
 		
 		centerBarPanel = new JPanel();
-		centerBarPanel.setSize(550, 900);
+		centerBarPanel.setSize(800,725);
 		centerBarPanel.setBackground(Color.WHITE);
 		centerBarPanel.setLayout(new GridLayout(20, 4));
 		createLabels();

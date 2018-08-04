@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -6,13 +6,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import org.json.JSONException;
+import javax.swing.JTextField;
 
 public class leftButtonPanel extends JPanel implements ActionListener {
 	
-	public final static String [] stockNames = {"AMD","SNAP","FCX", "FEYE", "AFSI"};
+	public final static String [] stockNames = {"AMD","SNAP","FCX", "FEYE", "AFSI", "OCLR", "ACIA", "GE"};
+	private JTextField searchField;
 	private JButton []buttons;
+	private JButton searchButton;
 	private GetStockPrice gsp;
 	private MainGuiWindow mgw;
 	
@@ -20,22 +21,30 @@ public class leftButtonPanel extends JPanel implements ActionListener {
 	public leftButtonPanel (GetStockPrice gsp, MainGuiWindow mgw){
 		this.gsp = gsp;
 		this.mgw = mgw;
-		buttons = new JButton[5];
+		buttons = new JButton[stockNames.length];
+		searchField = new JTextField();
+		
+		searchButton = new JButton("Search");
+		searchButton.addActionListener(this);
+		this.add(searchField);
+		this.add(searchButton);
+	
+
 		createButtons();
-		this.setLayout(new GridLayout(6, 1));
-		this.setPreferredSize(new Dimension(200,900));
-		this.setBackground(new Color(248,248,255));
-		this.setVisible(true);
+		this.setLayout(new GridLayout(20, 2));  // left panel layout
+		this.setPreferredSize(new Dimension(200,725));
+//		this.setBackground(new Color(248,248,255));
+//		this.setVisible(true);
 		this.setOpaque(true);
 	}
 
 	public void createButtons(){
 		
-		for (int i=0; i< 5; i++){
+		for (int i=0; i< stockNames.length; i++){
 			buttons[i] = new JButton(stockNames[i]);
 		    this.add(buttons[i]);
 		    buttons[i].setOpaque(true);
-		    buttons[i].setForeground(Color.LIGHT_GRAY);
+//		    buttons[i].setForeground(Color.LIGHT_GRAY);
 		    buttons[i].addActionListener(this);
 //		    buttons[i].setBackground(Color.BLUE);
 
@@ -65,7 +74,12 @@ public class leftButtonPanel extends JPanel implements ActionListener {
 			gsp.callMyMethod("afsi");
 			mgw.updateLabels();
 
+		} else if (e.getSource().equals(searchButton)) {
+			gsp.callMyMethod(searchField.getText());
+			mgw.updateLabels();
+
 		}
+		
 
 	}
 }
