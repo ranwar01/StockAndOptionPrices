@@ -35,10 +35,10 @@ public class FileMenuBar extends JPanel implements ActionListener{
 
 	private JFileChooser fileChooser;
 	private JMenuBar topBar;
-	private JMenu file, edit, tools, shapes;
+	private JMenu file, edit, tools;
 	private JMenuItem exit, open, save, copy, crop;
 
-
+// controls all the menu options in the topbar
 	public FileMenuBar(){
 
 		fileChooser = new JFileChooser();		
@@ -47,14 +47,12 @@ public class FileMenuBar extends JPanel implements ActionListener{
 		file = new JMenu("File");
 		edit = new JMenu("Edit");
 		tools = new JMenu("Tools");
-		shapes = new JMenu("Shapes");
 
 		open = new JMenuItem("Open");
 		save = new JMenuItem("Save");
 		exit = new JMenuItem("Exit");
 		copy = new JMenuItem("Copy");
 		crop = new JMenuItem("Crop");
-
 
 		exit.addActionListener(this);
 		save.addActionListener(this);
@@ -67,19 +65,17 @@ public class FileMenuBar extends JPanel implements ActionListener{
 		tools.add(copy);
 		tools.add(crop);
 
-
 		topBar.add(file);
 		topBar.add(edit);
 		topBar.add(tools);
-		topBar.add(shapes);
 		topBar.setPreferredSize(new Dimension(1000, 25));
 		topBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		this.setLayout(new BorderLayout());
 		this.add(topBar,BorderLayout.PAGE_START);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-
+		
+		// highlight are of jpanel
+		this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
 	}
 
@@ -96,10 +92,8 @@ public class FileMenuBar extends JPanel implements ActionListener{
 		}
 		else if(e.getSource().equals(open)){
 			fileChooser.showOpenDialog(open);
-
 		}
 		else if (e.getSource().equals(save)){
-
 		}
 
 	}

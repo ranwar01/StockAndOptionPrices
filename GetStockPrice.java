@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GetStockPrice {
-	
-	
 	
 	public static final String APIADDRESS = "https://api.iextrading.com/1.0";
 	private String stock = "/stock/";
@@ -37,6 +36,8 @@ public class GetStockPrice {
 	public void returnStockPrice(String stockName) throws IOException, JSONException{
 		
 		url = new URL(GetStockPrice.APIADDRESS + stock  + stockName + "/quote");
+
+//		url = new URL(GetStockPrice.APIADDRESS + stock  + "market/list/gainers");
 		System.out.println("Url is: - " + url);
 		
 		conn = (HttpsURLConnection) url.openConnection();
@@ -60,6 +61,8 @@ public class GetStockPrice {
 //		printValues();
 		
 	}
+	
+	
 
 	public void loopingThrough() throws JSONException{
 
@@ -72,20 +75,39 @@ public class GetStockPrice {
 		    hm.put(key, myResponse.get(key).toString());
 		    System.out.println(key + "    value is:  " + myResponse.get(key));
 		}
-//		String jsonstring = { "child": { "something": "value", "something2": "value" } };
-//			newj = new JSONObject(response);
-//			Iterator<?> keys = newj.keys();
-//
-//			while( keys.hasNext() ) {
-//			    String key = (String)keys.next();
-//			    System.out.println(key);
-//			   
-//	
-//	
-//			}
-		
 		
 	}
+	
+	public  void getMostGained() throws MalformedURLException, IOException, JSONException  {
+		
+		url = new URL(GetStockPrice.APIADDRESS + "/stock/market/list/gainers");
+
+//		url = new URL(GetStockPrice.APIADDRESS + stock  + "market/list/gainers");
+		System.out.println("Url is: - " + url);
+		
+		conn = (HttpsURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		response = new StringBuffer();
+		
+        try {
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+				System.out.println(response);
+			}	
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+        myResponse = new JSONObject(response.toString());
+//        System.out.println("myResponse is " + myResponse);
+    	
+//		loopingThrough();
+        
+//        myResponse = new JSONObject(response.toString());	
+//        return null;
+	}
+	
 	public void callMyMethod(String stockName){
 		try {
 			this.returnStockPrice(stockName);
