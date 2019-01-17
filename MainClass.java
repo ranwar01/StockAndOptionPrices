@@ -7,6 +7,7 @@ public class MainClass {
 
 		 GetStockPrice gsp = new GetStockPrice();
 		 gsp.returnStockPrice("amd");
+		 System.out.println("hellsssdddddffo");
 		 MainGuiWindow gui = new MainGuiWindow(gsp);
 		
 	}
